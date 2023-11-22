@@ -4,37 +4,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.todoc.data.TaskRepository;
 import com.example.todoc.data.entity.Project;
-import com.example.todoc.data.entity.ProjectWithTasks;
 import com.example.todoc.data.entity.Task;
 import com.example.todoc.data.sorting.AlphabeticalSortingType;
 import com.example.todoc.data.sorting.ChronologicalSortingType;
 import com.example.todoc.data.sorting.SortingParametersRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class TaskViewModel extends ViewModel {
 
     @NonNull
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     @NonNull
-    private Executor ioExecutor;
+    private final Executor ioExecutor;
 
     private final MediatorLiveData<List<TaskViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
-    private final  SortingParametersRepository sortingParametersRepository = new SortingParametersRepository();
 
+    @Inject
     public TaskViewModel(
         @NonNull TaskRepository taskRepository,
-        @NonNull Executor ioExecutor
+        @NonNull Executor ioExecutor,
+        @NonNull SortingParametersRepository sortingParametersRepository
     ) {
         this.taskRepository = taskRepository;
         this.ioExecutor = ioExecutor;
@@ -82,7 +85,7 @@ public class TaskViewModel extends ViewModel {
         }
     }
 
-    private int  compareTasks(
+    private int compareTasks(
         @NonNull Task task1,
         @NonNull Task task2,
         @NonNull AlphabeticalSortingType alphabeticalSortingType,

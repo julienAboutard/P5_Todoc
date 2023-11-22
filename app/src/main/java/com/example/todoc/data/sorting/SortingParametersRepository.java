@@ -4,12 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class SortingParametersRepository {
 
     private final MutableLiveData<AlphabeticalSortingType> alphabeticalSortingTypeMutableLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<ChronologicalSortingType> chronologicalSortingTypeMutableLiveData = new MutableLiveData<>();
 
+    @Inject
     public SortingParametersRepository() {
         alphabeticalSortingTypeMutableLiveData.setValue(AlphabeticalSortingType.NONE);
         chronologicalSortingTypeMutableLiveData.setValue(ChronologicalSortingType.NONE);

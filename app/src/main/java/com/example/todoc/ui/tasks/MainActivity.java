@@ -1,7 +1,6 @@
 package com.example.todoc.ui.tasks;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -10,9 +9,11 @@ import android.view.Menu;
 import android.view.View;
 
 import com.example.todoc.R;
-import com.example.todoc.ViewModelFactory;
 import com.example.todoc.databinding.ActivityMainBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private TaskViewModel viewModel;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(TaskViewModel.class) ;
+        viewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
         TaskAdapter adapter = new TaskAdapter(taskId -> viewModel.onDeleteTaskButtonClicked(taskId));
 

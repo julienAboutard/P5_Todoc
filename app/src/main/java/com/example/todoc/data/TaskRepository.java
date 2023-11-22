@@ -11,6 +11,10 @@ import com.example.todoc.data.entity.Task;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class TaskRepository {
 
     @NonNull
@@ -19,6 +23,7 @@ public class TaskRepository {
     @NonNull
     private ProjectDao projectDao;
 
+    @Inject
     public TaskRepository(
         @NonNull TaskDao taskDao,
         @NonNull ProjectDao projectDao

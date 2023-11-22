@@ -1,8 +1,6 @@
 package com.example.todoc.data;
 
 import android.app.Application;
-import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -19,6 +17,8 @@ import com.example.todoc.data.entity.Task;
 
 import java.util.concurrent.Executor;
 
+import javax.inject.Provider;
+
 @Database(
     entities = {Task.class, Project.class},
     version = 1
@@ -27,25 +27,14 @@ public abstract class TodocDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "todoc_database";
 
-    private static TodocDatabase instance;
-
     public abstract TaskDao getTaskDao();
 
     public abstract ProjectDao getProjectDao();
 
-    public static synchronized TodocDatabase getInstance(
+    public static TodocDatabase createDB(
         @NonNull Application application,
-        @NonNull Executor executor
-    ) {
-        if (instance == null) {
-            instance = createDB(application, executor);
-        }
-        return instance;
-    }
-
-    public static synchronized TodocDatabase createDB(
-        @NonNull Application application,
-        @NonNull Executor executor
+        @NonNull Executor executor,
+        @NonNull Provider<ProjectDao> projectDaoProvider
     ) {
         Builder<TodocDatabase> databaseBuilder = Room.databaseBuilder(
             application,
@@ -59,9 +48,7 @@ public abstract class TodocDatabase extends RoomDatabase {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        ProjectDao projectDao = TodocDatabase.instance.getProjectDao();
-
-                        projectDao.insert(
+                        projectDaoProvider.get().insert(
                             new Project(
                                 application.getString(R.string.tartampionp),
                                 ResourcesCompat.getColor(application.getResources(), R.color.tartampionc, null)
@@ -75,8 +62,4 @@ public abstract class TodocDatabase extends RoomDatabase {
 
         return databaseBuilder.build();
     }
-
-
-
-
 }
