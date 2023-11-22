@@ -1,5 +1,6 @@
 package com.example.todoc.data;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -33,21 +34,21 @@ public abstract class TodocDatabase extends RoomDatabase {
     public abstract ProjectDao getProjectDao();
 
     public static synchronized TodocDatabase getInstance(
-        @NonNull Context context,
+        @NonNull Application application,
         @NonNull Executor executor
     ) {
         if (instance == null) {
-            instance = createDB(context, executor);
+            instance = createDB(application, executor);
         }
         return instance;
     }
 
     public static synchronized TodocDatabase createDB(
-        @NonNull Context context,
+        @NonNull Application application,
         @NonNull Executor executor
     ) {
         Builder<TodocDatabase> databaseBuilder = Room.databaseBuilder(
-            context.getApplicationContext(),
+            application,
             TodocDatabase.class,
             DATABASE_NAME
         );
@@ -62,21 +63,18 @@ public abstract class TodocDatabase extends RoomDatabase {
 
                         projectDao.insert(
                             new Project(
-                                context.getString(R.string.tartampionp),
-                                ResourcesCompat.getColor(context.getResources(), R.color.tartampionc, null)
+                                application.getString(R.string.tartampionp),
+                                ResourcesCompat.getColor(application.getResources(), R.color.tartampionc, null)
                             )
                         );
                     }
                 });
             }
         });
+        databaseBuilder.fallbackToDestructiveMigration();
+
+        return databaseBuilder.build();
     }
-    private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-        }
-    };
 
 
 

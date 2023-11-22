@@ -34,6 +34,8 @@ public class TaskRepository {
         return taskDao.getAllProjectWithTasks();
     }
 
+    public LiveData<List<Task>> getAllTasks() { return taskDao.getAllTasks(); }
+
     public void addTask(Task task) {
         taskDao.insert(task);
     }

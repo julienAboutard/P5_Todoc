@@ -19,4 +19,13 @@
     <string name="tartampionp">Projet Tartampion</string>
     <string name="lucdiap">Projet Lucida</string>
     <string name="circusp">Projet Circus</string>
+
+    <string name="sort">Trier</string>
+    <string name="sorting_alphabetic_none">Tri des projets alphabétique : aucun</string>
+    <string name="sorting_alphabetic_sorted">Tri des projets alphabétique : A-Z</string>
+    <string name="sorting_alphabetic_inverted_sorted">Tri des projets alphabétique : Z-A</string>
+
+    <string name="sorting_chronological_none">Tri des taches par date : aucun</string>
+    <string name="sorting_chronological_sorted">Tri des taches par date : chronologique</string>
+    <string name="sorting_chronological_inverted_sorted">Tri des taches par date : inversé</string>
 </resources>

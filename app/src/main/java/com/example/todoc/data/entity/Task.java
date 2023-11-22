@@ -13,7 +13,7 @@ import java.util.Objects;
     foreignKeys = @ForeignKey(
         entity = Project.class,
         parentColumns = "project_id",
-        childColumns = "project_id"
+        childColumns = "projectId"
     )
 )
 public class Task {
@@ -30,9 +30,9 @@ public class Task {
     @NonNull
     private final long task_timeStamp;
 
-    public Task(int task_id, int project_id, @NonNull String task_name, long task_timeStamp) {
+    public Task(int task_id, int projectId, @NonNull String task_name, long task_timeStamp) {
         this.task_id = task_id;
-        this.projectId = project_id;
+        this.projectId = projectId;
         this.task_name = task_name;
         this.task_timeStamp = task_timeStamp;
     }

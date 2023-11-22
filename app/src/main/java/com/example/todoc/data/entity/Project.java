@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Project {
 
     @PrimaryKey(autoGenerate = true)
-    private final int project_id;
+    private int project_id;
 
     @NonNull
     private final String project_name;
@@ -19,10 +19,13 @@ public class Project {
     @ColorRes
     private final int project_color;
 
-    public Project(int project_id, @NonNull String project_name, int project_color) {
-        this.project_id = project_id;
+    public Project(@NonNull String project_name, int project_color) {
         this.project_name = project_name;
         this.project_color = project_color;
+    }
+
+    public void setProject_id(int id) {
+        this.project_id = id;
     }
 
     public int getProject_id() {
@@ -34,6 +37,7 @@ public class Project {
         return project_name;
     }
 
+    @ColorRes
     public int getProject_color() {
         return project_color;
     }
