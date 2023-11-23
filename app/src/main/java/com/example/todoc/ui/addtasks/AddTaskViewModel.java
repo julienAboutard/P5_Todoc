@@ -1,4 +1,6 @@
 package com.example.todoc.ui.addtasks;
 
-public class AddTaskViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class AddTaskViewModel extends ViewModel {
 }

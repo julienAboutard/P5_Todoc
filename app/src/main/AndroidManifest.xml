@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Todoc"
         tools:targetApi="31">
         <activity
-            android:name=".ui.tasks.MainActivity"
+            android:name=".ui.tasks.TaskActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

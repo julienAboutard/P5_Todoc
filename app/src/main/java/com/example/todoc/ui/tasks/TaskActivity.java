@@ -2,6 +2,7 @@ package com.example.todoc.ui.tasks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.example.todoc.databinding.ActivityMainBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity {
 
     private TaskViewModel viewModel;
     private ActivityMainBinding viewBinding;

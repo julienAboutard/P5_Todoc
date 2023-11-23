@@ -19,7 +19,7 @@ import java.util.Objects;
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    private final int task_id;
+    private int task_id;
 
     @ColumnInfo(index = true)
     private final int projectId;
@@ -30,11 +30,14 @@ public class Task {
     @NonNull
     private final long task_timeStamp;
 
-    public Task(int task_id, int projectId, @NonNull String task_name, long task_timeStamp) {
-        this.task_id = task_id;
+    public Task(int projectId, @NonNull String task_name, long task_timeStamp) {
         this.projectId = projectId;
         this.task_name = task_name;
         this.task_timeStamp = task_timeStamp;
+    }
+
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
     }
 
     public int getTask_id() {
@@ -71,7 +74,7 @@ public class Task {
     public String toString() {
         return "Task{" +
             "task_id=" + task_id +
-            ", project_id=" + projectId +
+            ", projectId=" + projectId +
             ", task_name='" + task_name + '\'' +
             ", task_timeStamp=" + task_timeStamp +
             '}';
