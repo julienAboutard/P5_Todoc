@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.example.todoc.R;
 import com.example.todoc.databinding.ActivityMainBinding;
+import com.example.todoc.ui.addtasks.AddTaskDialogFragment;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -50,7 +51,8 @@ public class TaskActivity extends AppCompatActivity {
 
 
     private void showAddTaskDialog() {
-
+        AddTaskDialogFragment dialogFragment = AddTaskDialogFragment.newInstance();
+        dialogFragment.show(getSupportFragmentManager().beginTransaction(), "Add Task");
     }
 
 }
