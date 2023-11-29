@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/bkg_oval"
+        android:src="@drawable/bkg_oval"
         tools:tint="#FF0000" />
 
     <TextView

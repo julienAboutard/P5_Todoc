@@ -35,7 +35,7 @@ public class TaskRepository {
         return projectDao.getAllProjects();
     }
 
-    public LiveData<List<ProjectWithTasks>> getAllProjectWthTasks() {
+    public LiveData<List<ProjectWithTasks>> getAllProjectWithTasks() {
         return taskDao.getAllProjectWithTasks();
     }
 

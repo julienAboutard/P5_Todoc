@@ -7,10 +7,13 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.todoc.data.TaskRepository;
+import com.example.todoc.data.entity.Project;
+import com.example.todoc.data.entity.ProjectWithTasks;
 import com.example.todoc.data.entity.Task;
 import com.example.todoc.data.sorting.AlphabeticalSortingType;
 import com.example.todoc.data.sorting.ChronologicalSortingType;
 import com.example.todoc.data.sorting.SortingParametersRepository;
+import com.example.todoc.ui.util.SingleLiveEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +35,8 @@ public class TaskViewModel extends ViewModel {
 
     private final MediatorLiveData<List<TaskViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
 
+    private final SingleLiveEvent<TaskViewAction> viewActionLiveEvent = new SingleLiveEvent<>();
+
     @Inject
     public TaskViewModel(
         @NonNull TaskRepository taskRepository,
@@ -41,24 +46,23 @@ public class TaskViewModel extends ViewModel {
         this.taskRepository = taskRepository;
         this.ioExecutor = ioExecutor;
 
-        LiveData<List<Task>> allTasks = taskRepository.getAllTasks();
+        LiveData<List<ProjectWithTasks>> allProjectWithTasks = taskRepository.getAllProjectWithTasks();
         LiveData<AlphabeticalSortingType> alphabeticalSortingTypeLiveData = sortingParametersRepository.getAlphabeticalSortingTypeLiveData();
         LiveData<ChronologicalSortingType> chronologicalSortingTypeLiveData = sortingParametersRepository.getChronologicalSortingTypeLiveData();
 
-        mediatorLiveData.addSource(allTasks, projectWithTasks ->
-            combine(projectWithTasks, alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingTypeLiveData.getValue())
+        mediatorLiveData.addSource(allProjectWithTasks, projectWithTasksList ->
+            combine(projectWithTasksList, alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingTypeLiveData.getValue())
         );
-
         mediatorLiveData.addSource(alphabeticalSortingTypeLiveData, alphabeticalSortingType ->
-            combine(allTasks.getValue(), alphabeticalSortingType, chronologicalSortingTypeLiveData.getValue())
+            combine(allProjectWithTasks.getValue(), alphabeticalSortingType, chronologicalSortingTypeLiveData.getValue())
         );
         mediatorLiveData.addSource(chronologicalSortingTypeLiveData, chronologicalSortingType ->
-            combine(allTasks.getValue(), alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingType)
+            combine(allProjectWithTasks.getValue(), alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingType)
         );
     }
 
     private void combine(
-        @Nullable List<Task> taskList,
+        @Nullable List<ProjectWithTasks> projectWithTasksList,
         @Nullable AlphabeticalSortingType alphabeticalSortingType,
         @Nullable ChronologicalSortingType chronologicalSortingType) {
 
@@ -68,9 +72,20 @@ public class TaskViewModel extends ViewModel {
         if (chronologicalSortingType == null) {
             throw new IllegalArgumentException("parameter chronologicalSortingType should never be null because repository guarantees an initial value");
         }
-        if (taskList == null) {
+        if (projectWithTasksList == null) {
             return;
         }
+
+        List<Task> taskList = new ArrayList<>();
+        List<Project> projectList = new ArrayList<>();
+
+        for (ProjectWithTasks projectWithTasks: projectWithTasksList) {
+            projectList.add(projectWithTasks.getProject());
+            for (Task task : projectWithTasks.getTask()) {
+                taskList.add(task);
+            }
+        }
+
 
         Collections.sort(
             taskList,
@@ -78,16 +93,16 @@ public class TaskViewModel extends ViewModel {
         );
 
         List<TaskViewStateItem> taskViewStateItemList = new ArrayList<>();
-        /*for (Task task : taskList) {
+         for (Task task : taskList) {
             taskViewStateItemList.add(
                 new TaskViewStateItem(
                     task.getTask_id(),
-                    allProjects.getValue().get(task.getProjectId()-1).getProject_color(),
+                    projectList.get(task.getProjectId()-1).getProject_color(),
                     task.getTask_name(),
-                    allProjects.getValue().get(task.getProjectId()-1).getProject_name()
+                    projectList.get(task.getProjectId()-1).getProject_name()
                 )
             );
-        }*/
+        }
         mediatorLiveData.setValue(taskViewStateItemList);
     }
 
@@ -126,6 +141,12 @@ public class TaskViewModel extends ViewModel {
         ioExecutor.execute(() -> taskRepository.deleteTask(taskId));
     }
 
+    public SingleLiveEvent<TaskViewAction> getViewActionSingleLiveEvent() {
+        return viewActionLiveEvent;
+    }
+    public void onDisplaySortingButtonClicked() {
+        viewActionLiveEvent.setValue(TaskViewAction.DISPLAY_SORTING_DIALOG);
+    }
     @NonNull
     public LiveData<List<TaskViewStateItem>> getViewStateLiveData() {
         return mediatorLiveData;

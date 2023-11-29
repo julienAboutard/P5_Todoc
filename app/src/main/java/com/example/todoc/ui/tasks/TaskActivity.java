@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +31,6 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         viewModel = new ViewModelProvider(this).get(TaskViewModel.class);
@@ -42,6 +42,7 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
+        viewBinding.listTasks.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.listTasks.setAdapter(adapter);
         viewBinding.fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +53,13 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         viewModel.getViewStateLiveData().observe(this, taskViewStateItems -> {
+            if (!taskViewStateItems.isEmpty()) {
+                viewBinding.lblNoTask.setVisibility(View.INVISIBLE);
+            }
             adapter.submitList(taskViewStateItems);
         });
+
+        initSortingDialog();
     }
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -63,14 +69,19 @@ public class TaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                SortDialogFragment dialogFragment = SortDialogFragment.newInstance();
-                dialogFragment.show(getSupportFragmentManager().beginTransaction(), "Sort Diag");
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_filter) {
+            viewModel.onDisplaySortingButtonClicked();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initSortingDialog() {
+        viewModel.getViewActionSingleLiveEvent().observe(this, viewAction -> {
+            if (viewAction == TaskViewAction.DISPLAY_SORTING_DIALOG) {
+                SortDialogFragment.newInstance().show(getSupportFragmentManager(), null);
             }
         });
-        return super.onOptionsItemSelected(item);
     }
 }
