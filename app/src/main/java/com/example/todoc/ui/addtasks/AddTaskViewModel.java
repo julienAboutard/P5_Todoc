@@ -1,6 +1,7 @@
 package com.example.todoc.ui.addtasks;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.todoc.data.TaskRepository;
@@ -39,8 +40,8 @@ public class AddTaskViewModel extends ViewModel {
         this.ioExecutor = ioExecutor;
     }
 
-    public List<Project> getAllProjects() {
-        return taskRepository.getAllProject().getValue();
+    public LiveData<List<Project>> getAllProjects() {
+        return taskRepository.getAllProject();
     }
 
     public void onProjectSelected(@NonNull Project project) {

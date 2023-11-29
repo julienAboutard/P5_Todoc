@@ -7,8 +7,6 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.todoc.data.TaskRepository;
-import com.example.todoc.data.entity.Project;
-import com.example.todoc.data.entity.ProjectWithTasks;
 import com.example.todoc.data.entity.Task;
 import com.example.todoc.data.sorting.AlphabeticalSortingType;
 import com.example.todoc.data.sorting.ChronologicalSortingType;
@@ -32,10 +30,6 @@ public class TaskViewModel extends ViewModel {
     @NonNull
     private final Executor ioExecutor;
 
-    @NonNull
-    private final SortingParametersRepository sortingParametersRepository;
-
-    private final LiveData<List<Project>> allProjects;
     private final MediatorLiveData<List<TaskViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
 
     @Inject
@@ -46,12 +40,10 @@ public class TaskViewModel extends ViewModel {
     ) {
         this.taskRepository = taskRepository;
         this.ioExecutor = ioExecutor;
-        this.sortingParametersRepository = sortingParametersRepository;
 
         LiveData<List<Task>> allTasks = taskRepository.getAllTasks();
         LiveData<AlphabeticalSortingType> alphabeticalSortingTypeLiveData = sortingParametersRepository.getAlphabeticalSortingTypeLiveData();
         LiveData<ChronologicalSortingType> chronologicalSortingTypeLiveData = sortingParametersRepository.getChronologicalSortingTypeLiveData();
-        allProjects = taskRepository.getAllProject();
 
         mediatorLiveData.addSource(allTasks, projectWithTasks ->
             combine(projectWithTasks, alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingTypeLiveData.getValue())
@@ -70,6 +62,12 @@ public class TaskViewModel extends ViewModel {
         @Nullable AlphabeticalSortingType alphabeticalSortingType,
         @Nullable ChronologicalSortingType chronologicalSortingType) {
 
+        if (alphabeticalSortingType == null) {
+            throw new IllegalArgumentException("parameter alphabeticalSortingType should never be null because repository guarantees an initial value");
+        }
+        if (chronologicalSortingType == null) {
+            throw new IllegalArgumentException("parameter chronologicalSortingType should never be null because repository guarantees an initial value");
+        }
         if (taskList == null) {
             return;
         }
