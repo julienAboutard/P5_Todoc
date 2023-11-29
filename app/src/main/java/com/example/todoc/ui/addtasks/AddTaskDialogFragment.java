@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,6 @@ import com.example.todoc.databinding.DialogAddTaskBinding;
 import com.example.todoc.ui.addtasks.spinner.SpinnerAdapter;
 import com.example.todoc.ui.addtasks.spinner.SpinnerItem;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,22 +31,34 @@ public class AddTaskDialogFragment extends DialogFragment {
         return new AddTaskDialogFragment();
     }
 
-    @NonNull
-    private ArrayList<SpinnerItem> spinnerItemArrayList;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         DialogAddTaskBinding binding = DialogAddTaskBinding.inflate(LayoutInflater.from(requireContext()));
         AddTaskViewModel viewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
 
-        initSpinner(viewModel.getAllProjects());
+        List<Project> projectList = viewModel.getAllProjects();
+        ArrayList<SpinnerItem> spinnerItemArrayList = new ArrayList<>();
+
+        for (Project project : projectList) {
+            spinnerItemArrayList.add(new SpinnerItem(project));
+        }
 
         final SpinnerAdapter adapter = new SpinnerAdapter(requireContext(), spinnerItemArrayList);
         binding.projectSpinner.setAdapter(adapter);
-        binding.projectSpinner.setOnItemClickListener((parent, view, position, id) ->
-            viewModel.onProjectSelected(adapter.getItem(position).getProject())
-        );
+        binding.projectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SpinnerItem spinnerItem = (SpinnerItem) parent.getItemAtPosition(position);
+
+                viewModel.onProjectSelected(spinnerItem.getProject());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         binding.txtTaskName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,27 +82,6 @@ public class AddTaskDialogFragment extends DialogFragment {
             dismiss()
         );
 
-        /*viewModel.getAddTaskViewStateLiveData().observe(this, addTaskViewState -> {
-            adapter.clear();
-            adapter.addAll(addTaskViewState.getAddTaskViewStateItems());
-
-            binding.createTaskButtonOk.setVisibility(addTaskViewState.isProgressBarVisible() ? View.INVISIBLE : View.VISIBLE);
-            binding.createTaskProgressBarOk.setVisibility(addTaskViewState.isProgressBarVisible() ? View.VISIBLE : View.INVISIBLE);
-        });
-
-        viewModel.getDismissDialogSingleLiveEvent().observe(this, ignored ->
-            dismiss()
-        );
-        viewModel.getDisplayToastMessageSingleLiveEvent().observe(this, message ->
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-        );*/
-
         return binding.getRoot();
-    }
-
-    private void initSpinner(List<Project> projects) {
-        for (Project project : projects) {
-            spinnerItemArrayList.add(new SpinnerItem(project));
-        }
     }
 }

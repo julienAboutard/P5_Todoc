@@ -32,7 +32,7 @@ public class TaskRepository {
         this.projectDao = projectDao;
     }
     public LiveData<List<Project>> getAllProject() {
-        return projectDao.getAll();
+        return projectDao.getAllProjects();
     }
 
     public LiveData<List<ProjectWithTasks>> getAllProjectWthTasks() {

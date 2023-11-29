@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.todoc.data.TaskRepository;
 import com.example.todoc.data.entity.Project;
+import com.example.todoc.data.entity.ProjectWithTasks;
 import com.example.todoc.data.entity.Task;
 import com.example.todoc.data.sorting.AlphabeticalSortingType;
 import com.example.todoc.data.sorting.ChronologicalSortingType;
@@ -31,6 +32,10 @@ public class TaskViewModel extends ViewModel {
     @NonNull
     private final Executor ioExecutor;
 
+    @NonNull
+    private final SortingParametersRepository sortingParametersRepository;
+
+    private final LiveData<List<Project>> allProjects;
     private final MediatorLiveData<List<TaskViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
 
     @Inject
@@ -41,10 +46,12 @@ public class TaskViewModel extends ViewModel {
     ) {
         this.taskRepository = taskRepository;
         this.ioExecutor = ioExecutor;
+        this.sortingParametersRepository = sortingParametersRepository;
 
         LiveData<List<Task>> allTasks = taskRepository.getAllTasks();
         LiveData<AlphabeticalSortingType> alphabeticalSortingTypeLiveData = sortingParametersRepository.getAlphabeticalSortingTypeLiveData();
         LiveData<ChronologicalSortingType> chronologicalSortingTypeLiveData = sortingParametersRepository.getChronologicalSortingTypeLiveData();
+        allProjects = taskRepository.getAllProject();
 
         mediatorLiveData.addSource(allTasks, projectWithTasks ->
             combine(projectWithTasks, alphabeticalSortingTypeLiveData.getValue(), chronologicalSortingTypeLiveData.getValue())
@@ -66,23 +73,24 @@ public class TaskViewModel extends ViewModel {
         if (taskList == null) {
             return;
         }
-        List<Project> allProjects = taskRepository.getAllProject().getValue();
+
         Collections.sort(
             taskList,
             (task1, task2) -> compareTasks(task1, task2, alphabeticalSortingType, chronologicalSortingType)
         );
 
         List<TaskViewStateItem> taskViewStateItemList = new ArrayList<>();
-        for (Task task : taskList) {
+        /*for (Task task : taskList) {
             taskViewStateItemList.add(
                 new TaskViewStateItem(
                     task.getTask_id(),
-                    allProjects.get(task.getProjectId()).getProject_color(),
+                    allProjects.getValue().get(task.getProjectId()-1).getProject_color(),
                     task.getTask_name(),
-                    allProjects.get(task.getProjectId()).getProject_name()
+                    allProjects.getValue().get(task.getProjectId()-1).getProject_name()
                 )
             );
-        }
+        }*/
+        mediatorLiveData.setValue(taskViewStateItemList);
     }
 
     private int compareTasks(

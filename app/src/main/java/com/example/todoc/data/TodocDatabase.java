@@ -21,7 +21,8 @@ import javax.inject.Provider;
 
 @Database(
     entities = {Task.class, Project.class},
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 public abstract class TodocDatabase extends RoomDatabase {
 
@@ -33,8 +34,9 @@ public abstract class TodocDatabase extends RoomDatabase {
 
     public static TodocDatabase createDB(
         @NonNull Application application,
-        @NonNull Executor executor,
-        @NonNull Provider<ProjectDao> projectDaoProvider
+        @NonNull Executor ioExecutor,
+        @NonNull Provider<ProjectDao> projectDaoProvider,
+        @NonNull Provider<TaskDao> taskDaoProvider
     ) {
         Builder<TodocDatabase> databaseBuilder = Room.databaseBuilder(
             application,
@@ -45,13 +47,32 @@ public abstract class TodocDatabase extends RoomDatabase {
         databaseBuilder.addCallback(new Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                executor.execute(new Runnable() {
+                ioExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
                         projectDaoProvider.get().insert(
                             new Project(
                                 application.getString(R.string.tartampionp),
                                 ResourcesCompat.getColor(application.getResources(), R.color.tartampionc, null)
+                            )
+                        );
+                        projectDaoProvider.get().insert(
+                            new Project(
+                                application.getString(R.string.circusp),
+                                ResourcesCompat.getColor(application.getResources(), R.color.circusc, null)
+                            )
+                        );
+                        projectDaoProvider.get().insert(
+                            new Project(
+                                application.getString(R.string.lucdiap),
+                                ResourcesCompat.getColor(application.getResources(), R.color.lucidac, null)
+                            )
+                        );
+                        taskDaoProvider.get().insert(
+                            new Task(
+                                1,
+                                "test",
+                                System.currentTimeMillis()
                             )
                         );
                     }

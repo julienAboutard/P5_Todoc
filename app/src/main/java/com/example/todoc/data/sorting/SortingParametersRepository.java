@@ -31,7 +31,7 @@ public class SortingParametersRepository {
             newType = AlphabeticalSortingType.NONE;
         } else {
             newType = AlphabeticalSortingType.AZ;
-        }
+        }  newType = AlphabeticalSortingType.NONE;
 
         alphabeticalSortingTypeMutableLiveData.setValue(newType);
     }
