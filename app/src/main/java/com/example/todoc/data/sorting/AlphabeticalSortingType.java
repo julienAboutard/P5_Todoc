@@ -5,6 +5,7 @@ import androidx.annotation.StringRes;
 
 import com.example.todoc.R;
 import com.example.todoc.data.entity.Project;
+import com.example.todoc.data.entity.ProjectWithTasks;
 import com.example.todoc.data.entity.Task;
 
 import java.util.Comparator;
@@ -50,14 +51,14 @@ public enum AlphabeticalSortingType {
         new int[]{-R.attr.state_not_sorted, R.attr.state_sorted, -R.attr.state_invert_sorted},
         R.string.sorting_alphabetic_sorted,
         (o1, o2) -> {
-            return o1.getTask_name().compareTo(o2.getTask_name());
+            return o1.getProject().getProject_name().compareTo(o2.getProject().getProject_name());
         }
     ),
     ZA(
         new int[]{-R.attr.state_not_sorted, -R.attr.state_sorted, R.attr.state_invert_sorted},
         R.string.sorting_alphabetic_inverted_sorted,
         (o1, o2) -> {
-            return o2.getTask_name().compareTo(o1.getTask_name());
+            return o2.getProject().getProject_name().compareTo(o1.getProject().getProject_name());
         }
     ),
     NONE(
@@ -72,9 +73,9 @@ public enum AlphabeticalSortingType {
     private final int messageStringRes;
 
     @Nullable
-    private final Comparator<Task> comparator;
+    private final Comparator<ProjectWithTasks> comparator;
 
-    AlphabeticalSortingType(int[] state, @StringRes int messageStringRes, @Nullable Comparator<Task> comparator) {
+    AlphabeticalSortingType(int[] state, @StringRes int messageStringRes, @Nullable Comparator<ProjectWithTasks> comparator) {
         this.state = state;
         this.messageStringRes = messageStringRes;
         this.comparator = comparator;
@@ -90,7 +91,7 @@ public enum AlphabeticalSortingType {
     }
 
     @Nullable
-    public Comparator<Task> getComparator() {
+    public Comparator<ProjectWithTasks> getComparator() {
         return comparator;
     }
 }
