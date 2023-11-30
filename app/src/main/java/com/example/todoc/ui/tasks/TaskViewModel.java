@@ -137,7 +137,7 @@ public class TaskViewModel extends ViewModel {
         }
         mediatorLiveData.setValue(taskViewStateItemList);
     }
-    
+
     private int compareTasks(
         @NonNull Task task1,
         @NonNull Task task2,
