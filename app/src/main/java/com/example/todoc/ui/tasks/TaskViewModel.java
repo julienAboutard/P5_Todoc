@@ -17,7 +17,10 @@ import com.example.todoc.ui.util.SingleLiveEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -61,6 +64,23 @@ public class TaskViewModel extends ViewModel {
         );
     }
 
+    public void onDeleteTaskButtonClicked(int taskId) {
+        ioExecutor.execute(() -> taskRepository.deleteTask(taskId));
+    }
+
+    public SingleLiveEvent<TaskViewAction> getViewActionSingleLiveEvent() {
+        return viewActionLiveEvent;
+    }
+
+    public void onDisplaySortingButtonClicked() {
+        viewActionLiveEvent.setValue(TaskViewAction.DISPLAY_SORTING_DIALOG);
+    }
+
+    @NonNull
+    public LiveData<List<TaskViewStateItem>> getViewStateLiveData() {
+        return mediatorLiveData;
+    }
+
     private void combine(
         @Nullable List<ProjectWithTasks> projectWithTasksList,
         @Nullable AlphabeticalSortingType alphabeticalSortingType,
@@ -77,14 +97,15 @@ public class TaskViewModel extends ViewModel {
         }
 
         List<Task> taskList = new ArrayList<>();
-        List<Project> projectList = new ArrayList<>();
+        Map<Integer, Project> projectList = new HashMap<>();
 
-        if (alphabeticalSortingType.getComparator() == null) {
+        for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
+            projectList.put(projectWithTasks.getProject().getProject_id(), projectWithTasks.getProject());
+        }
+
+        if (alphabeticalSortingType.getComparator() == null && chronologicalSortingType.getComparator() != null) {
             for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
-                projectList.add(projectWithTasks.getProject());
-                for (Task task : projectWithTasks.getTask()) {
-                    taskList.add(task);
-                }
+                taskList.addAll(projectWithTasks.getTask());
             }
 
 
@@ -92,7 +113,7 @@ public class TaskViewModel extends ViewModel {
                 taskList,
                 (task1, task2) -> compareTasks(task1, task2, chronologicalSortingType)
             );
-        } else {
+        } else if (alphabeticalSortingType.getComparator() != null && chronologicalSortingType.getComparator() == null) {
             Collections.sort(
                 projectWithTasksList,
                 (projectWithTasksList1, projectWithTasksList2) -> compareProjectsWithTasks(
@@ -102,36 +123,40 @@ public class TaskViewModel extends ViewModel {
                 )
             );
 
-            if (chronologicalSortingType.getComparator() != null) {
-                for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
-                    Collections.sort(
-                        projectWithTasks.getTask(),
-                        (task1, task2) -> compareTasks(task1, task2, chronologicalSortingType)
-                    );
-                    projectList.add(projectWithTasks.getProject());
-                    for (Task task : projectWithTasks.getTask()) {
-                        taskList.add(task);
-                    }
-                }
-            } else {
-                for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
-                    projectList.add(projectWithTasks.getProject());
-                    for (Task task : projectWithTasks.getTask()) {
-                        taskList.add(task);
-                    }
-                }
+            for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
+                taskList.addAll(projectWithTasks.getTask());
+            }
+        } else if (alphabeticalSortingType.getComparator() != null) {
+            Collections.sort(
+                projectWithTasksList,
+                (projectWithTasksList1, projectWithTasksList2) -> compareProjectsWithTasks(
+                    projectWithTasksList1,
+                    projectWithTasksList2,
+                    alphabeticalSortingType
+                )
+            );
+
+            for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
+                Collections.sort(
+                    projectWithTasks.getTask(),
+                    (task1, task2) -> compareTasks(task1, task2, chronologicalSortingType)
+                );
+                taskList.addAll(projectWithTasks.getTask());
+            }
+        } else {
+            for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
+                taskList.addAll(projectWithTasks.getTask());
             }
         }
-
 
         List<TaskViewStateItem> taskViewStateItemList = new ArrayList<>();
         for (Task task : taskList) {
             taskViewStateItemList.add(
                 new TaskViewStateItem(
                     task.getTask_id(),
-                    projectList.get(task.getProjectId() - 1).getProject_color(),
+                    Objects.requireNonNull(projectList.get(task.getProjectId())).getProject_color(),
                     task.getTask_name(),
-                    projectList.get(task.getProjectId() - 1).getProject_name()
+                    Objects.requireNonNull(projectList.get(task.getProjectId())).getProject_name()
                 )
             );
         }
@@ -168,23 +193,6 @@ public class TaskViewModel extends ViewModel {
         }
 
         return projectWithTasks1.getProject().getProject_id() - projectWithTasks2.getProject().getProject_id();
-    }
-
-    public void onDeleteTaskButtonClicked(int taskId) {
-        ioExecutor.execute(() -> taskRepository.deleteTask(taskId));
-    }
-
-    public SingleLiveEvent<TaskViewAction> getViewActionSingleLiveEvent() {
-        return viewActionLiveEvent;
-    }
-
-    public void onDisplaySortingButtonClicked() {
-        viewActionLiveEvent.setValue(TaskViewAction.DISPLAY_SORTING_DIALOG);
-    }
-
-    @NonNull
-    public LiveData<List<TaskViewStateItem>> getViewStateLiveData() {
-        return mediatorLiveData;
     }
 
 }

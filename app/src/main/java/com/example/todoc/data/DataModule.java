@@ -33,10 +33,9 @@ public class DataModule {
     public TodocDatabase provideTodocDatabase(
         @NonNull Application application,
         @NonNull Executor ioExecutor,
-        @NonNull Provider<ProjectDao> projectDaoProvider,
-        @NonNull Provider<TaskDao> taskDaoProvider
+        @NonNull Provider<ProjectDao> projectDaoProvider
     ) {
-        return TodocDatabase.createDB(application, ioExecutor, projectDaoProvider, taskDaoProvider);
+        return TodocDatabase.createDB(application, ioExecutor, projectDaoProvider);
     }
 
     @Provides

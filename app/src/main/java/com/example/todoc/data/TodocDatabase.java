@@ -35,8 +35,7 @@ public abstract class TodocDatabase extends RoomDatabase {
     public static TodocDatabase createDB(
         @NonNull Application application,
         @NonNull Executor ioExecutor,
-        @NonNull Provider<ProjectDao> projectDaoProvider,
-        @NonNull Provider<TaskDao> taskDaoProvider
+        @NonNull Provider<ProjectDao> projectDaoProvider
     ) {
         Builder<TodocDatabase> databaseBuilder = Room.databaseBuilder(
             application,
@@ -66,13 +65,6 @@ public abstract class TodocDatabase extends RoomDatabase {
                             new Project(
                                 application.getString(R.string.lucdiap),
                                 ResourcesCompat.getColor(application.getResources(), R.color.lucidac, null)
-                            )
-                        );
-                        taskDaoProvider.get().insert(
-                            new Task(
-                                1,
-                                "test",
-                                System.currentTimeMillis()
                             )
                         );
                     }
