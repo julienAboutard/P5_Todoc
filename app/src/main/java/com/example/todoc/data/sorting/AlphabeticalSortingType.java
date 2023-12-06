@@ -4,9 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.example.todoc.R;
-import com.example.todoc.data.entity.Project;
 import com.example.todoc.data.entity.ProjectWithTasks;
-import com.example.todoc.data.entity.Task;
 
 import java.util.Comparator;
 
@@ -51,14 +49,14 @@ public enum AlphabeticalSortingType {
         new int[]{-R.attr.state_not_sorted, R.attr.state_sorted, -R.attr.state_invert_sorted},
         R.string.sorting_alphabetic_sorted,
         (o1, o2) -> {
-            return o1.getProject().getProject_name().compareTo(o2.getProject().getProject_name());
+            return o1.getProject().getProjectName().compareTo(o2.getProject().getProjectName());
         }
     ),
     ZA(
         new int[]{-R.attr.state_not_sorted, -R.attr.state_sorted, R.attr.state_invert_sorted},
         R.string.sorting_alphabetic_inverted_sorted,
         (o1, o2) -> {
-            return o2.getProject().getProject_name().compareTo(o1.getProject().getProject_name());
+            return o2.getProject().getProjectName().compareTo(o1.getProject().getProjectName());
         }
     ),
     NONE(

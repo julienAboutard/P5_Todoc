@@ -25,7 +25,8 @@ public class TaskAdapter extends ListAdapter<TaskViewStateItem, TaskAdapter.View
         return new ViewHolder(
             ItemTaskBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false
-            ));
+            )
+        );
     }
 
     @Override

@@ -29,7 +29,6 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());

@@ -165,14 +165,14 @@ public class TaskDaoTest {
 
         switch (projectNumber) {
             case 1:
-                assertEquals(EXPECTED_PROJECT_ID_1, project.getProject_id());
-                assertEquals(EXPECTED_PROJECT_NAME_1, project.getProject_name());
-                assertEquals(EXPECTED_PROJECT_COLOR_1, project.getProject_color());
+                assertEquals(EXPECTED_PROJECT_ID_1, project.getProjectId());
+                assertEquals(EXPECTED_PROJECT_NAME_1, project.getProjectName());
+                assertEquals(EXPECTED_PROJECT_COLOR_1, project.getProjectColor());
                 break;
             case 2:
-                assertEquals(EXPECTED_PROJECT_ID_2, project.getProject_id());
-                assertEquals(EXPECTED_PROJECT_NAME_2, project.getProject_name());
-                assertEquals(EXPECTED_PROJECT_COLOR_2, project.getProject_color());
+                assertEquals(EXPECTED_PROJECT_ID_2, project.getProjectId());
+                assertEquals(EXPECTED_PROJECT_NAME_2, project.getProjectName());
+                assertEquals(EXPECTED_PROJECT_COLOR_2, project.getProjectColor());
                 break;
         }
 

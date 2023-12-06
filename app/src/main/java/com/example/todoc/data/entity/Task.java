@@ -1,9 +1,11 @@
 package com.example.todoc.data.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -27,10 +29,18 @@ public class Task {
     @NonNull
     private final String task_name;
 
-    @NonNull
     private final long task_timeStamp;
 
     public Task(int projectId, @NonNull String task_name, long task_timeStamp) {
+        this.projectId = projectId;
+        this.task_name = task_name;
+        this.task_timeStamp = task_timeStamp;
+    }
+
+    @Ignore
+    @VisibleForTesting
+    public Task(int taskId, int projectId, @NonNull String task_name, long task_timeStamp) {
+        this.task_id = taskId;
         this.projectId = projectId;
         this.task_name = task_name;
         this.task_timeStamp = task_timeStamp;

@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.todoc.data.entity.Project;
@@ -21,7 +20,6 @@ import com.example.todoc.ui.addtasks.spinner.SpinnerAdapter;
 import com.example.todoc.ui.addtasks.spinner.SpinnerItem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -79,7 +77,7 @@ public class AddTaskDialogFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                viewModel.onTaskName(s.toString());
+                viewModel.onTaskNameChanged(s.toString());
             }
         });
         binding.buttonCancel.setOnClickListener(v -> viewModel.onCancelButtonClicked());
@@ -89,6 +87,10 @@ public class AddTaskDialogFragment extends DialogFragment {
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, ignored ->
             dismiss()
+        );
+
+        viewModel.getDisplayToastSingleLiveEvent().observe(this, stringResId ->
+            Toast.makeText(requireContext(), stringResId, Toast.LENGTH_SHORT).show()
         );
 
         return binding.getRoot();

@@ -28,4 +28,5 @@
     <string name="sorting_chronological_none">Tri des taches par date : aucun</string>
     <string name="sorting_chronological_sorted">Tri des taches par date : chronologique</string>
     <string name="sorting_chronological_inverted_sorted">Tri des taches par date : inversé</string>
+    <string name="error_empty_task_name">ERROR TASK NAME EMPTY</string>
 </resources>

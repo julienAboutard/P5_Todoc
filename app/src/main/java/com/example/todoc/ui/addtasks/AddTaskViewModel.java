@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.todoc.R;
 import com.example.todoc.data.TaskRepository;
 import com.example.todoc.data.entity.Project;
 import com.example.todoc.data.entity.Task;
@@ -31,6 +32,8 @@ public class AddTaskViewModel extends ViewModel {
 
     private SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Integer> displayToastSingleLiveEvent = new SingleLiveEvent<>();
+
     @Inject
     public AddTaskViewModel(
         @NonNull TaskRepository taskRepository,
@@ -48,25 +51,34 @@ public class AddTaskViewModel extends ViewModel {
         selectedProject = project;
     }
 
-    public void  onTaskName(@NonNull String taskName) {
+    public void onTaskNameChanged(@NonNull String taskName) {
         taskNameCreated = taskName;
     }
+
     public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
         return closeActivitySingleLiveEvent;
     }
 
-    public void onAddButtonClicked(@NonNull Long timestamp) {
-        ioExecutor.execute(() -> {
-            taskRepository.addTask(
-                new Task(
-                    selectedProject.getProject_id(),
-                    taskNameCreated,
-                    timestamp
-                )
-            );
-        });
+    public SingleLiveEvent<Integer> getDisplayToastSingleLiveEvent() {
+        return displayToastSingleLiveEvent;
+    }
 
-        closeActivitySingleLiveEvent.call();
+    public void onAddButtonClicked(@NonNull Long timestamp) {
+        if (taskNameCreated.isBlank()) {
+            displayToastSingleLiveEvent.setValue(R.string.error_empty_task_name);
+        } else {
+            ioExecutor.execute(() -> {
+                taskRepository.addTask(
+                    new Task(
+                        selectedProject.getProjectId(),
+                        taskNameCreated,
+                        timestamp
+                    )
+                );
+            });
+
+            closeActivitySingleLiveEvent.call();
+        }
     }
 
     public void onCancelButtonClicked() {

@@ -66,12 +66,12 @@ public class AddTaskViewModelTest {
 
         //When
         viewModel.onProjectSelected(project);
-        viewModel.onTaskName(taskName);
+        viewModel.onTaskNameChanged(taskName);
         viewModel.onAddButtonClicked(timeStamp);
 
         //Then
         verify(ioExecutor).execute(any());
-        verify(taskRepository).addTask(new Task(project.getProject_id(), taskName, timeStamp));
+        verify(taskRepository).addTask(new Task(project.getProjectId(), taskName, timeStamp));
         Mockito.verifyNoMoreInteractions(taskRepository, ioExecutor);
     }
 

@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -97,10 +96,10 @@ public class TaskViewModel extends ViewModel {
         }
 
         List<Task> taskList = new ArrayList<>();
-        Map<Integer, Project> projectList = new HashMap<>();
+        Map<Integer, Project> projectWithIds = new HashMap<>();
 
         for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
-            projectList.put(projectWithTasks.getProject().getProject_id(), projectWithTasks.getProject());
+            projectWithIds.put(projectWithTasks.getProject().getProjectId(), projectWithTasks.getProject());
         }
 
         if (alphabeticalSortingType.getComparator() == null && chronologicalSortingType.getComparator() != null) {
@@ -151,12 +150,16 @@ public class TaskViewModel extends ViewModel {
 
         List<TaskViewStateItem> taskViewStateItemList = new ArrayList<>();
         for (Task task : taskList) {
+            Project project = projectWithIds.get(task.getProjectId());
+            if (project == null) {
+                throw new IllegalStateException("Incoherent state: every project should be paired with an ID, by SQL FK rules");
+            }
             taskViewStateItemList.add(
                 new TaskViewStateItem(
                     task.getTask_id(),
-                    Objects.requireNonNull(projectList.get(task.getProjectId())).getProject_color(),
+                    project.getProjectColor(),
                     task.getTask_name(),
-                    Objects.requireNonNull(projectList.get(task.getProjectId())).getProject_name()
+                    project.getProjectName()
                 )
             );
         }
@@ -192,7 +195,7 @@ public class TaskViewModel extends ViewModel {
             }
         }
 
-        return projectWithTasks1.getProject().getProject_id() - projectWithTasks2.getProject().getProject_id();
+        return projectWithTasks1.getProject().getProjectId() - projectWithTasks2.getProject().getProjectId();
     }
 
 }

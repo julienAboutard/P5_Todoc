@@ -43,8 +43,8 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
         SpinnerItem currentItem = getItem(position);
 
         if (currentItem != null) {
-            imageView.setColorFilter(currentItem.getProject().getProject_color());
-            textView.setText(currentItem.getProject().getProject_name());
+            imageView.setColorFilter(currentItem.getProject().getProjectColor());
+            textView.setText(currentItem.getProject().getProjectName());
         }
         return  convertView;
     }

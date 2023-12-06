@@ -2,7 +2,10 @@ package com.example.todoc.data.entity;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -11,35 +14,45 @@ import java.util.Objects;
 public class Project {
 
     @PrimaryKey(autoGenerate = true)
-    private int project_id;
+    @ColumnInfo(name = "project_id")
+    private int projectId;
 
     @NonNull
-    private final String project_name;
+    @ColumnInfo(name = "project_name")
+    private final String projectName;
 
     @ColorRes
-    private final int project_color;
+    @ColumnInfo(name = "project_color")
+    private final int projectColor;
 
-    public Project(@NonNull String project_name, int project_color) {
-        this.project_name = project_name;
-        this.project_color = project_color;
+    public Project(@NonNull String projectName, int projectColor) {
+        this(0, projectName, projectColor);
     }
 
-    public void setProject_id(int id) {
-        this.project_id = id;
+    @Ignore
+    @VisibleForTesting
+    public Project(int projectId, @NonNull String projectName, int projectColor) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.projectColor = projectColor;
     }
 
-    public int getProject_id() {
-        return project_id;
+    public void setProjectId(int id) {
+        this.projectId = id;
+    }
+
+    public int getProjectId() {
+        return projectId;
     }
 
     @NonNull
-    public String getProject_name() {
-        return project_name;
+    public String getProjectName() {
+        return projectName;
     }
 
     @ColorRes
-    public int getProject_color() {
-        return project_color;
+    public int getProjectColor() {
+        return projectColor;
     }
 
     @Override
@@ -47,20 +60,20 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return project_id == project.project_id && project_color == project.project_color && project_name.equals(project.project_name);
+        return projectId == project.projectId && projectColor == project.projectColor && projectName.equals(project.projectName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(project_id, project_name, project_color);
+        return Objects.hash(projectId, projectName, projectColor);
     }
 
     @Override
     public String toString() {
         return "Project{" +
-            "project_id=" + project_id +
-            ", project_name='" + project_name + '\'' +
-            ", project_color=" + project_color +
+            "project_id=" + projectId +
+            ", projectName='" + projectName + '\'' +
+            ", projectColor=" + projectColor +
             '}';
     }
 }

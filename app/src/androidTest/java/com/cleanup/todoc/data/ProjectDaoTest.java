@@ -65,9 +65,9 @@ public class ProjectDaoTest {
 
         // Then
         assertEquals(1, results.size());
-        assertEquals(0, results.get(0).getProject_id());
-        assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProject_name());
-        assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProject_color());
+        assertEquals(0, results.get(0).getProjectId());
+        assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProjectName());
+        assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProjectColor());
     }
 
     @Test
@@ -85,13 +85,13 @@ public class ProjectDaoTest {
         // Then
         assertEquals(2, results.size());
 
-        assertEquals(0, results.get(0).getProject_id());
-        assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProject_name());
-        assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProject_color());
+        assertEquals(0, results.get(0).getProjectId());
+        assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProjectName());
+        assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProjectColor());
 
-        assertEquals(1, results.get(1).getProject_id());
-        assertEquals(EXPECTED_PROJECT_NAME_2, results.get(1).getProject_name());
-        assertEquals(EXPECTED_PROJECT_COLOR_2, results.get(1).getProject_color());
+        assertEquals(1, results.get(1).getProjectId());
+        assertEquals(EXPECTED_PROJECT_NAME_2, results.get(1).getProjectName());
+        assertEquals(EXPECTED_PROJECT_COLOR_2, results.get(1).getProjectColor());
     }
 
     @Test
