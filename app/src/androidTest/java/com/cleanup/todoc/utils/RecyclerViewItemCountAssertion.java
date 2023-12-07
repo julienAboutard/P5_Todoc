@@ -22,6 +22,7 @@ import org.hamcrest.TypeSafeMatcher;
 /**
  * Get item count of recyclerview
  * or check if found the expected count in the recyclerview
+ * @noinspection unchecked
  */
 public class RecyclerViewItemCountAssertion implements ViewAssertion {
     private final int expectedCount;
@@ -46,7 +47,7 @@ public class RecyclerViewItemCountAssertion implements ViewAssertion {
      */
     public static int getCountFromRecyclerView(@IdRes int RecyclerViewId) {
         final int[] COUNT = {0};
-        Matcher matcher = new TypeSafeMatcher<View>() {
+        Matcher<View> matcher = new TypeSafeMatcher<>() {
             @Override
             protected boolean matchesSafely(View item) {
                 COUNT[0] = ((RecyclerView) item).getAdapter().getItemCount();

@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+/** @noinspection unused, unused, unused */
 public class AddTaskViewStateItem {
 
-    private int projectId;
+    private final int projectId;
 
     @NonNull
-    private String taskName;
+    private final String taskName;
 
     public AddTaskViewStateItem(int projectId, @NonNull String taskName) {
         this.projectId = projectId;

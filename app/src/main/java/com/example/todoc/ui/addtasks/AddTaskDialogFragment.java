@@ -85,7 +85,7 @@ public class AddTaskDialogFragment extends DialogFragment {
             System.currentTimeMillis()
         ));
 
-        viewModel.getCloseActivitySingleLiveEvent().observe(this, ignored ->
+        viewModel.getCloseDialogSingleLiveEvent().observe(this, ignored ->
             dismiss()
         );
 

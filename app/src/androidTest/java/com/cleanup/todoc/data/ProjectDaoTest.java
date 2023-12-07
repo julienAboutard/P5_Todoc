@@ -27,8 +27,10 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class ProjectDaoTest {
 
+    private static final int EXPECTED_PROJECT_ID_1 = 1;
     private static final String EXPECTED_PROJECT_NAME_1 = "EXPECTED_PROJECT_NAME_1";
     private static final int EXPECTED_PROJECT_COLOR_1 = 1;
+    private static final int EXPECTED_PROJECT_ID_2 = 2;
     private static final String EXPECTED_PROJECT_NAME_2 = "EXPECTED_PROJECT_NAME_2";
     private static final int EXPECTED_PROJECT_COLOR_2 = 2;
 
@@ -56,7 +58,7 @@ public class ProjectDaoTest {
     @Test
     public void insertOneProject() throws Exception {
         // Given
-        Project project = new Project(EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
+        Project project = new Project(EXPECTED_PROJECT_ID_1, EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
 
 
         // When
@@ -65,7 +67,7 @@ public class ProjectDaoTest {
 
         // Then
         assertEquals(1, results.size());
-        assertEquals(0, results.get(0).getProjectId());
+        assertEquals(EXPECTED_PROJECT_ID_1, results.get(0).getProjectId());
         assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProjectName());
         assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProjectColor());
     }
@@ -73,8 +75,8 @@ public class ProjectDaoTest {
     @Test
     public void insertTwoProjects() throws Exception {
         // Given
-        Project project1 = new Project(EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
-        Project project2 = new Project(EXPECTED_PROJECT_NAME_2, EXPECTED_PROJECT_COLOR_2);
+        Project project1 = new Project(EXPECTED_PROJECT_ID_1, EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
+        Project project2 = new Project(EXPECTED_PROJECT_ID_2, EXPECTED_PROJECT_NAME_2, EXPECTED_PROJECT_COLOR_2);
 
 
         // When
@@ -85,11 +87,11 @@ public class ProjectDaoTest {
         // Then
         assertEquals(2, results.size());
 
-        assertEquals(0, results.get(0).getProjectId());
+        assertEquals(EXPECTED_PROJECT_ID_1, results.get(0).getProjectId());
         assertEquals(EXPECTED_PROJECT_NAME_1, results.get(0).getProjectName());
         assertEquals(EXPECTED_PROJECT_COLOR_1, results.get(0).getProjectColor());
 
-        assertEquals(1, results.get(1).getProjectId());
+        assertEquals(EXPECTED_PROJECT_ID_2, results.get(1).getProjectId());
         assertEquals(EXPECTED_PROJECT_NAME_2, results.get(1).getProjectName());
         assertEquals(EXPECTED_PROJECT_COLOR_2, results.get(1).getProjectColor());
     }

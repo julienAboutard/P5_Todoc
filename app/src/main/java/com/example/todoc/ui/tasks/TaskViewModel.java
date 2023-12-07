@@ -102,48 +102,23 @@ public class TaskViewModel extends ViewModel {
             projectWithIds.put(projectWithTasks.getProject().getProjectId(), projectWithTasks.getProject());
         }
 
-        if (alphabeticalSortingType.getComparator() == null && chronologicalSortingType.getComparator() != null) {
+        if (alphabeticalSortingType.getComparator() == null) {
             for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
                 taskList.addAll(projectWithTasks.getTask());
             }
-
 
             Collections.sort(
                 taskList,
                 (task1, task2) -> compareTasks(task1, task2, chronologicalSortingType)
             );
-        } else if (alphabeticalSortingType.getComparator() != null && chronologicalSortingType.getComparator() == null) {
-            Collections.sort(
-                projectWithTasksList,
-                (projectWithTasksList1, projectWithTasksList2) -> compareProjectsWithTasks(
-                    projectWithTasksList1,
-                    projectWithTasksList2,
-                    alphabeticalSortingType
-                )
-            );
-
-            for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
-                taskList.addAll(projectWithTasks.getTask());
-            }
-        } else if (alphabeticalSortingType.getComparator() != null) {
-            Collections.sort(
-                projectWithTasksList,
-                (projectWithTasksList1, projectWithTasksList2) -> compareProjectsWithTasks(
-                    projectWithTasksList1,
-                    projectWithTasksList2,
-                    alphabeticalSortingType
-                )
-            );
+        } else {
+            sortAll(projectWithTasksList, alphabeticalSortingType);
 
             for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
                 Collections.sort(
                     projectWithTasks.getTask(),
                     (task1, task2) -> compareTasks(task1, task2, chronologicalSortingType)
                 );
-                taskList.addAll(projectWithTasks.getTask());
-            }
-        } else {
-            for (ProjectWithTasks projectWithTasks : projectWithTasksList) {
                 taskList.addAll(projectWithTasks.getTask());
             }
         }
@@ -156,15 +131,16 @@ public class TaskViewModel extends ViewModel {
             }
             taskViewStateItemList.add(
                 new TaskViewStateItem(
-                    task.getTask_id(),
+                    task.getTaskId(),
                     project.getProjectColor(),
-                    task.getTask_name(),
+                    task.getTaskName(),
                     project.getProjectName()
                 )
             );
         }
         mediatorLiveData.setValue(taskViewStateItemList);
     }
+
 
     private int compareTasks(
         @NonNull Task task1,
@@ -179,7 +155,7 @@ public class TaskViewModel extends ViewModel {
             }
         }
 
-        return task1.getTask_id() - task2.getTask_id();
+        return task1.getTaskId() - task2.getTaskId();
     }
 
     private int compareProjectsWithTasks(
@@ -198,4 +174,15 @@ public class TaskViewModel extends ViewModel {
         return projectWithTasks1.getProject().getProjectId() - projectWithTasks2.getProject().getProjectId();
     }
 
+    private void sortAll(
+        @NonNull List<ProjectWithTasks> projectWithTasksList, @NonNull AlphabeticalSortingType alphabeticalSortingType) {
+        Collections.sort(
+            projectWithTasksList,
+            (projectWithTasksList1, projectWithTasksList2) -> compareProjectsWithTasks(
+                projectWithTasksList1,
+                projectWithTasksList2,
+                alphabeticalSortingType
+            )
+        );
+    }
 }

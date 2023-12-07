@@ -1,26 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Todoc</string>
 
     <string name="label_action_filter">Filter</string>
 
-    <string name="sort_alphabetical">A -&gt; Z</string>
-    <string name="sort_alphabetical_invert">Z -&gt; A</string>
-    <string name="sort_oldest_first">Les plus anciens d’abord</string>
-    <string name="sort_recent_first">Les plus récents d’abord</string>
+    <string name="sort_alphabetical" tools:keep="@string/sort_alphabetical">A -&gt; Z</string>
+    <string name="sort_alphabetical_invert" tools:keep="@string/sort_alphabetical_invert">Z -&gt; A</string>
+    <string name="sort_oldest_first" tools:keep="@string/sort_oldest_first">Les plus anciens d’abord</string>
+    <string name="sort_recent_first" tools:keep="@string/sort_recent_first">Les plus récents d’abord</string>
 
     <string name="add_task">Ajouter une tâche</string>
-    <string name="add">Ajouter</string>
+    <string name="add" tools:keep="@string/add">Ajouter</string>
 
     <string name="no_task">Tu n’as aucune tâche à traiter</string>
 
     <string name="task_name_hint">Nom de la tâche</string>
 
-    <string name="empty_task_name">Le nom de la tâche doit être renseigné</string>
+    <string name="empty_task_name" tools:keep="@string/empty_task_name">Le nom de la tâche doit être renseigné</string>
     <string name="tartampionp">Projet Tartampion</string>
     <string name="lucdiap">Projet Lucida</string>
     <string name="circusp">Projet Circus</string>
 
-    <string name="sort">Trier</string>
+    <string name="sort" tools:keep="@string/sort">Trier</string>
     <string name="sorting_alphabetic_none">Tri des projets alphabétique : aucun</string>
     <string name="sorting_alphabetic_sorted">Tri des projets alphabétique : A-Z</string>
     <string name="sorting_alphabetic_inverted_sorted">Tri des projets alphabétique : Z-A</string>

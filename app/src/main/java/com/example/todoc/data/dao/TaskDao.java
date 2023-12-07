@@ -11,6 +11,7 @@ import com.example.todoc.data.entity.Task;
 
 import java.util.List;
 
+/** @noinspection UnusedReturnValue*/
 @Dao
 public interface TaskDao {
 

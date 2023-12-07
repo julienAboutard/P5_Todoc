@@ -22,6 +22,7 @@ public class SortViewModel extends ViewModel {
     @NonNull
     private final SortingParametersRepository sortingParametersRepository;
 
+    /** @noinspection FieldCanBeLocal*/
     @NonNull
     private final Executor ioExecutor;
 

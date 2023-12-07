@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_task_name"
-        tools:listitem="@layout/spinner_project_layout_ressource" />
+        tools:listitem="@layout/spinner_project_layout_resource" />
 
     <Button
         android:id="@+id/button_ok"

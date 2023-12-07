@@ -37,14 +37,17 @@ public class TaskDaoTest {
     private static final String EXPECTED_PROJECT_NAME_2 = "EXPECTED_PROJECT_NAME_2";
     private static final int EXPECTED_PROJECT_COLOR_2 = 2;
 
+    private static final int EXPECTED_TASK_ID_1 = 1;
     private static final int EXPECTED_TASK_PROJECT_ID_1 = EXPECTED_PROJECT_ID_1;
     private static final String EXPECTED_TASK_NAME_1 = "EXPECTED_TASK_NAME_1";
     private static final long EXPECTED_TASK_TIMESTAMP_1 = 600;
 
+    private static final int EXPECTED_TASK_ID_2 = 2;
     private static final int EXPECTED_TASK_PROJECT_ID_2 = EXPECTED_PROJECT_ID_1;
     private static final String EXPECTED_TASK_NAME_2 = "EXPECTED_TASK_NAME_2";
     private static final long EXPECTED_TASK_TIMESTAMP_2 = 3600;
 
+    private static final int EXPECTED_TASK_ID_3 = 3;
     private static final int EXPECTED_TASK_PROJECT_ID_3 = EXPECTED_PROJECT_ID_2;
     private static final String EXPECTED_TASK_NAME_3 = "EXPECTED_TASK_NAME_3";
     private static final long EXPECTED_TASK_TIMESTAMP_3 = 400;
@@ -154,65 +157,62 @@ public class TaskDaoTest {
     }
 
     private Project createFirstProject() {
-        return new Project(EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
+        return new Project(EXPECTED_PROJECT_ID_1, EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
     }
 
     private Project createSecondProject() {
-        return new Project(EXPECTED_PROJECT_NAME_2, EXPECTED_PROJECT_COLOR_2);
+        return new Project(EXPECTED_PROJECT_ID_2, EXPECTED_PROJECT_NAME_2, EXPECTED_PROJECT_COLOR_2);
     }
 
     private void assertProject(Project project, int projectNumber) {
 
         switch (projectNumber) {
-            case 1:
+            case 1 -> {
                 assertEquals(EXPECTED_PROJECT_ID_1, project.getProjectId());
                 assertEquals(EXPECTED_PROJECT_NAME_1, project.getProjectName());
                 assertEquals(EXPECTED_PROJECT_COLOR_1, project.getProjectColor());
-                break;
-            case 2:
+            }
+            case 2 -> {
                 assertEquals(EXPECTED_PROJECT_ID_2, project.getProjectId());
                 assertEquals(EXPECTED_PROJECT_NAME_2, project.getProjectName());
                 assertEquals(EXPECTED_PROJECT_COLOR_2, project.getProjectColor());
-                break;
+            }
         }
 
     }
     private Task createFirstTask() {
-        return new Task(EXPECTED_TASK_PROJECT_ID_1, EXPECTED_TASK_NAME_1, EXPECTED_TASK_TIMESTAMP_1);
+        return new Task(EXPECTED_TASK_ID_1, EXPECTED_TASK_PROJECT_ID_1, EXPECTED_TASK_NAME_1, EXPECTED_TASK_TIMESTAMP_1);
     }
 
     private Task createSecondTask() {
-        return new Task(EXPECTED_TASK_PROJECT_ID_2, EXPECTED_TASK_NAME_2, EXPECTED_TASK_TIMESTAMP_2);
+        return new Task(EXPECTED_TASK_ID_2, EXPECTED_TASK_PROJECT_ID_2, EXPECTED_TASK_NAME_2, EXPECTED_TASK_TIMESTAMP_2);
     }
 
     private Task createThridTask() {
-        return new Task(EXPECTED_TASK_PROJECT_ID_3, EXPECTED_TASK_NAME_3, EXPECTED_TASK_TIMESTAMP_3);
+        return new Task(EXPECTED_TASK_ID_3, EXPECTED_TASK_PROJECT_ID_3, EXPECTED_TASK_NAME_3, EXPECTED_TASK_TIMESTAMP_3);
     }
 
     private void assertTask(List<Task> taskList, int position, int taskNumber) {
 
         switch (taskNumber) {
-
-            case 1:
-                assertEquals(taskNumber, taskList.get(position).getTask_id());
+            case 1 -> {
+                assertEquals(EXPECTED_TASK_ID_1, taskList.get(position).getTaskId());
                 assertEquals(EXPECTED_TASK_PROJECT_ID_1, taskList.get(position).getProjectId());
-                assertEquals(EXPECTED_TASK_NAME_1, taskList.get(position).getTask_name());
-                assertEquals(EXPECTED_TASK_TIMESTAMP_1, taskList.get(position).getTask_timeStamp());
-                break;
-
-            case 2:
-                assertEquals(taskNumber, taskList.get(position).getTask_id());
+                assertEquals(EXPECTED_TASK_NAME_1, taskList.get(position).getTaskName());
+                assertEquals(EXPECTED_TASK_TIMESTAMP_1, taskList.get(position).getTaskTimeStamp());
+            }
+            case 2 -> {
+                assertEquals(EXPECTED_TASK_ID_2, taskList.get(position).getTaskId());
                 assertEquals(EXPECTED_TASK_PROJECT_ID_2, taskList.get(position).getProjectId());
-                assertEquals(EXPECTED_TASK_NAME_2, taskList.get(position).getTask_name());
-                assertEquals(EXPECTED_TASK_TIMESTAMP_2, taskList.get(position).getTask_timeStamp());
-                break;
-
-            case 3:
-                assertEquals(taskNumber, taskList.get(position).getTask_id());
+                assertEquals(EXPECTED_TASK_NAME_2, taskList.get(position).getTaskName());
+                assertEquals(EXPECTED_TASK_TIMESTAMP_2, taskList.get(position).getTaskTimeStamp());
+            }
+            case 3 -> {
+                assertEquals(EXPECTED_TASK_ID_3, taskList.get(position).getTaskId());
                 assertEquals(EXPECTED_TASK_PROJECT_ID_3, taskList.get(position).getProjectId());
-                assertEquals(EXPECTED_TASK_NAME_3, taskList.get(position).getTask_name());
-                assertEquals(EXPECTED_TASK_TIMESTAMP_3, taskList.get(position).getTask_timeStamp());
-                break;
+                assertEquals(EXPECTED_TASK_NAME_3, taskList.get(position).getTaskName());
+                assertEquals(EXPECTED_TASK_TIMESTAMP_3, taskList.get(position).getTaskTimeStamp());
+            }
         }
     }
 

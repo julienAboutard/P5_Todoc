@@ -38,11 +38,10 @@ public class RecyclerViewItemAssertion implements ViewAssertion {
             throw noViewFoundException;
         }
 
-        if (!(view instanceof RecyclerView)) {
+        if (!(view instanceof RecyclerView recyclerView)) {
             throw new IllegalStateException("The asserted view is not RecyclerView");
         }
 
-        RecyclerView recyclerView = (RecyclerView) view;
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForLayoutPosition(position);
 
         if (viewHolder == null) {

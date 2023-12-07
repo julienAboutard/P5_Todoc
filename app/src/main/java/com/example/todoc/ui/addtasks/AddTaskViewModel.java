@@ -21,18 +21,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class AddTaskViewModel extends ViewModel {
 
     @NonNull
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     @NonNull
-    private Executor ioExecutor;
+    private final Executor ioExecutor;
 
     private Project selectedProject;
 
     private String taskNameCreated;
 
-    private SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> closeDialogSingleLiveEvent = new SingleLiveEvent<>();
 
-    private SingleLiveEvent<Integer> displayToastSingleLiveEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Integer> displayToastSingleLiveEvent = new SingleLiveEvent<>();
 
     @Inject
     public AddTaskViewModel(
@@ -51,37 +51,34 @@ public class AddTaskViewModel extends ViewModel {
         selectedProject = project;
     }
 
-    public void onTaskNameChanged(@NonNull String taskName) {
+    public void onTaskNameChanged(String taskName) {
         taskNameCreated = taskName;
     }
 
-    public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
-        return closeActivitySingleLiveEvent;
+    public SingleLiveEvent<Void> getCloseDialogSingleLiveEvent() {
+        return closeDialogSingleLiveEvent;
     }
 
     public SingleLiveEvent<Integer> getDisplayToastSingleLiveEvent() {
         return displayToastSingleLiveEvent;
     }
-
     public void onAddButtonClicked(@NonNull Long timestamp) {
-        if (taskNameCreated.isBlank()) {
+        if (taskNameCreated == null) {
             displayToastSingleLiveEvent.setValue(R.string.error_empty_task_name);
         } else {
-            ioExecutor.execute(() -> {
-                taskRepository.addTask(
-                    new Task(
-                        selectedProject.getProjectId(),
-                        taskNameCreated,
-                        timestamp
-                    )
-                );
-            });
+            ioExecutor.execute(() -> taskRepository.addTask(
+                new Task(
+                    selectedProject.getProjectId(),
+                    taskNameCreated,
+                    timestamp
+                )
+            ));
 
-            closeActivitySingleLiveEvent.call();
+            closeDialogSingleLiveEvent.call();
         }
     }
 
     public void onCancelButtonClicked() {
-        closeActivitySingleLiveEvent.call();
+        closeDialogSingleLiveEvent.call();
     }
 }

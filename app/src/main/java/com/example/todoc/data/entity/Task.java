@@ -21,37 +21,35 @@ import java.util.Objects;
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    private int task_id;
+    @ColumnInfo(name = "task_id")
+    private final int taskId;
 
     @ColumnInfo(index = true)
     private final int projectId;
 
     @NonNull
-    private final String task_name;
+    @ColumnInfo(name = "task_name")
+    private final String taskName;
 
-    private final long task_timeStamp;
-
-    public Task(int projectId, @NonNull String task_name, long task_timeStamp) {
-        this.projectId = projectId;
-        this.task_name = task_name;
-        this.task_timeStamp = task_timeStamp;
-    }
+    @ColumnInfo(name = "task_timeStamp")
+    private final long taskTimeStamp;
 
     @Ignore
+    public Task(int projectId, @NonNull String taskName, long taskTimeStamp) {
+        this(0, projectId, taskName, taskTimeStamp);
+    }
+
     @VisibleForTesting
-    public Task(int taskId, int projectId, @NonNull String task_name, long task_timeStamp) {
-        this.task_id = taskId;
+    public Task(int taskId, int projectId, @NonNull String taskName, long taskTimeStamp) {
+        this.taskId = taskId;
         this.projectId = projectId;
-        this.task_name = task_name;
-        this.task_timeStamp = task_timeStamp;
+        this.taskName = taskName;
+        this.taskTimeStamp = taskTimeStamp;
     }
 
-    public void setTask_id(int task_id) {
-        this.task_id = task_id;
-    }
 
-    public int getTask_id() {
-        return task_id;
+    public int getTaskId() {
+        return taskId;
     }
 
     public int getProjectId() {
@@ -59,12 +57,12 @@ public class Task {
     }
 
     @NonNull
-    public String getTask_name() {
-        return task_name;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public long getTask_timeStamp() {
-        return task_timeStamp;
+    public long getTaskTimeStamp() {
+        return taskTimeStamp;
     }
 
     @Override
@@ -72,21 +70,21 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return task_id == task.task_id && projectId == task.projectId && task_timeStamp == task.task_timeStamp && task_name.equals(task.task_name);
+        return taskId == task.taskId && projectId == task.projectId && taskTimeStamp == task.taskTimeStamp && taskName.equals(task.taskName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(task_id, projectId, task_name, task_timeStamp);
+        return Objects.hash(taskId, projectId, taskName, taskTimeStamp);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-            "task_id=" + task_id +
+            "task_id=" + taskId +
             ", projectId=" + projectId +
-            ", task_name='" + task_name + '\'' +
-            ", task_timeStamp=" + task_timeStamp +
+            ", task_name='" + taskName + '\'' +
+            ", task_timeStamp=" + taskTimeStamp +
             '}';
     }
 }

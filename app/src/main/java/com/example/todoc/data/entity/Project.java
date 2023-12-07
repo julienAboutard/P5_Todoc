@@ -15,7 +15,7 @@ public class Project {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "project_id")
-    private int projectId;
+    private final int projectId;
 
     @NonNull
     @ColumnInfo(name = "project_name")
@@ -25,20 +25,17 @@ public class Project {
     @ColumnInfo(name = "project_color")
     private final int projectColor;
 
+    @Ignore
     public Project(@NonNull String projectName, int projectColor) {
         this(0, projectName, projectColor);
     }
 
-    @Ignore
+
     @VisibleForTesting
     public Project(int projectId, @NonNull String projectName, int projectColor) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectColor = projectColor;
-    }
-
-    public void setProjectId(int id) {
-        this.projectId = id;
     }
 
     public int getProjectId() {

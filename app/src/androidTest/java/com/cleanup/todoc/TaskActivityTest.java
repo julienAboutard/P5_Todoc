@@ -32,8 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.LocalTime;
-
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class TaskActivityTest {
@@ -61,9 +59,9 @@ public class TaskActivityTest {
     public void addDeleteSortTask() throws InterruptedException{
 
         //Add Task
-        addTask(EXPECTED_TASK_NAME_1, Project.TARTAMPION);
+        addTask(EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
         onView(withId(R.id.list_tasks)).check(new RecyclerViewItemCountAssertion(1));
 
         //Delete Task
@@ -71,128 +69,180 @@ public class TaskActivityTest {
         onView(withId(R.id.list_tasks)).check(new RecyclerViewItemCountAssertion(0));
 
         //Add multiple Tasks
-        addTask(EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        addTask(EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        addTask(EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        addTask(EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        addTask(EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        addTask(EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
         onView(withId(R.id.list_tasks)).check(new RecyclerViewItemCountAssertion(3));
 
+        //Delete one Task that not the first
         deleteTask(2);
         onView(withId(R.id.list_tasks)).check(new RecyclerViewItemCountAssertion(2));
 
+        //Delete all tasks
         deleteAllTask();
+        onView(withId(R.id.list_tasks)).check(new RecyclerViewItemCountAssertion(0));
 
+        //Sort 3 tasks and 3 projects, 1 task in each project
+        addTask(EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        addTask(EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        addTask(EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
-        //Sort
-        addTask(EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        addTask(EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        addTask(EXPECTED_TASK_NAME_3, Project.LUCIDIA);
-
-        onView(withId(R.id.action_filter)).perform(click());
-        onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
-        onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
-        pressBack();
-
+        //Sort project by alphabetic
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_sorted)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
         pressBack();
 
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
+        //Sort project by alphabetic reversed
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_inverted_sorted)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
         pressBack();
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
+        //Back to initial state
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
+        onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
+        onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
+        pressBack();
+
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+
+        //Sort tasks by chronological
+        onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_sorted)));
         pressBack();
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
+        //Sort tasks by chronological reversed
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_inverted_sorted)));
         pressBack();
 
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
+        //Back to initial state
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
         pressBack();
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
 
-        addTask(EXPECTED_TASK_NAME_3, Project.TARTAMPION);
+        //Sort 4 tasks and 3 projects, 2 projects with only 1 task and 1 project with 2 tasks
+        addTask(EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
 
+        //Sort tasks by chronological
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_sorted)));
         pressBack();
 
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
-        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_3, Project.TARTAMPION);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
 
+        //Sort projects by alphabetical and tasks by chronological
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_sorted)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_sorted)));
         pressBack();
 
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
-        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_3, Project.TARTAMPION);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
 
+        //Sort projects by alphabetical and tasks by chronological reversed
         onView(withId(R.id.action_filter)).perform(click());
         onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
         onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_sorted)));
         onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_inverted_sorted)));
         pressBack();
 
-        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_1, Project.TARTAMPION);
-        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, Project.CIRCUS);
-        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, Project.LUCIDIA);
-        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, Project.TARTAMPION);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
+
+        //Sort projects by alphabetical reversed and tasks by chronological reversed
+        onView(withId(R.id.action_filter)).perform(click());
+        onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
+        onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_inverted_sorted)));
+        onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_inverted_sorted)));
+        pressBack();
+
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
+
+        //Sort projects by alphabetical reversed
+        onView(withId(R.id.action_filter)).perform(click());
+        onView(withId(R.id.sorting_dialog_ll_chronological)).perform(click());
+        onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_inverted_sorted)));
+        onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
+        pressBack();
+
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
+
+        //Back to initial State
+        onView(withId(R.id.action_filter)).perform(click());
+        onView(withId(R.id.sorting_dialog_ll_alphabetical)).perform(click());
+        onView(withId(R.id.sorting_dialog_tv_alphabetical)).check(matches(withText(R.string.sorting_alphabetic_none)));
+        onView(withId(R.id.sorting_dialog_tv_chronological)).check(matches(withText(R.string.sorting_chronological_none)));
+        pressBack();
+
+        assertItemInRecyclerView(0, EXPECTED_TASK_NAME_1, ProjectTest.TARTAMPION);
+        assertItemInRecyclerView(1, EXPECTED_TASK_NAME_2, ProjectTest.CIRCUS);
+        assertItemInRecyclerView(2, EXPECTED_TASK_NAME_3, ProjectTest.LUCIDIA);
+        assertItemInRecyclerView(3, EXPECTED_TASK_NAME_3, ProjectTest.TARTAMPION);
     }
 
     private void addTask(
         @NonNull final String taskName,
-        @NonNull final Project project
+        @NonNull final ProjectTest projectTest
     ) {
         onView(withId(R.id.fab_add_task)).perform(click());
 
         onView(withId(R.id.txt_task_name)).perform(replaceText(taskName), closeSoftKeyboard());
         onView(withId(R.id.project_spinner)).perform(click());
-        onView(allOf(withId(R.id.spinner_project_name), withText(project.projectName))).inRoot(RootMatchers.isPlatformPopup()).perform(scrollTo(), click());
+        onView(allOf(withId(R.id.spinner_project_name), withText(projectTest.projectName))).inRoot(RootMatchers.isPlatformPopup()).perform(scrollTo(), click());
 
         onView(withId(R.id.button_ok)).perform(click());
     }
@@ -213,7 +263,7 @@ public class TaskActivityTest {
     private void assertItemInRecyclerView(
         int positionOnRecyclerView,
         @NonNull String taskName,
-        @NonNull Project project
+        @NonNull ProjectTest projectTest
     ) {
         onView(withId(R.id.list_tasks)).check(
             new RecyclerViewItemAssertion(
@@ -226,26 +276,21 @@ public class TaskActivityTest {
             new RecyclerViewItemAssertion(
                 positionOnRecyclerView,
                 R.id.lbl_project_name,
-                withText(project.projectName)
+                withText(projectTest.projectName)
             )
         );
     }
 
-    private enum Project {
+    private enum ProjectTest {
         TARTAMPION(0, R.string.tartampionp, R.color.tartampionc),
         CIRCUS(1, R.string.circusp, R.color.circusc),
         LUCIDIA(2, R.string.lucdiap, R.color.lucidac);
 
 
-        private final int spinnerIndex;
         private final int projectName;
-        @ColorRes
-        private final int projectColor;
 
-        Project(int spinnerIndex, @StringRes int projectName, @ColorRes int projectColor) {
-            this.spinnerIndex = spinnerIndex;
+        ProjectTest(int spinnerIndex, @StringRes int projectName, @ColorRes int projectColor) {
             this.projectName = projectName;
-            this.projectColor = projectColor;
         }
     }
 }

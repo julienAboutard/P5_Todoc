@@ -32,9 +32,8 @@ public class AddTaskViewModelTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock private TaskRepository taskRepository;
-    private Executor ioExecutor = Mockito.spy(new TestExecutor());
+    private final Executor ioExecutor = Mockito.spy(new TestExecutor());
 
-    private LiveData<List<Project>> projectLiveData;
     private AddTaskViewModel viewModel;
 
     @Before
@@ -45,7 +44,7 @@ public class AddTaskViewModelTest {
     @Test
     public void testGetAllProject() {
         //Given
-        projectLiveData = Mockito.mock();
+        LiveData<List<Project>> projectLiveData = Mockito.mock();
         Mockito.doReturn(projectLiveData).when(taskRepository).getAllProject();
 
         //When
@@ -62,7 +61,7 @@ public class AddTaskViewModelTest {
         //Given
         Project project = Mockito.mock();
         String taskName = "Task Test";
-        Long timeStamp = System.currentTimeMillis();
+        long timeStamp = System.currentTimeMillis();
 
         //When
         viewModel.onProjectSelected(project);

@@ -46,28 +46,25 @@ public abstract class TodocDatabase extends RoomDatabase {
         databaseBuilder.addCallback(new Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                ioExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        projectDaoProvider.get().insert(
-                            new Project(
-                                application.getString(R.string.tartampionp),
-                                ResourcesCompat.getColor(application.getResources(), R.color.tartampionc, null)
-                            )
-                        );
-                        projectDaoProvider.get().insert(
-                            new Project(
-                                application.getString(R.string.circusp),
-                                ResourcesCompat.getColor(application.getResources(), R.color.circusc, null)
-                            )
-                        );
-                        projectDaoProvider.get().insert(
-                            new Project(
-                                application.getString(R.string.lucdiap),
-                                ResourcesCompat.getColor(application.getResources(), R.color.lucidac, null)
-                            )
-                        );
-                    }
+                ioExecutor.execute(() -> {
+                    projectDaoProvider.get().insert(
+                        new Project(
+                            application.getString(R.string.tartampionp),
+                            ResourcesCompat.getColor(application.getResources(), R.color.tartampionc, null)
+                        )
+                    );
+                    projectDaoProvider.get().insert(
+                        new Project(
+                            application.getString(R.string.circusp),
+                            ResourcesCompat.getColor(application.getResources(), R.color.circusc, null)
+                        )
+                    );
+                    projectDaoProvider.get().insert(
+                        new Project(
+                            application.getString(R.string.lucdiap),
+                            ResourcesCompat.getColor(application.getResources(), R.color.lucidac, null)
+                        )
+                    );
                 });
             }
         });

@@ -5,7 +5,7 @@ import com.example.todoc.data.entity.Project;
 
 public class SpinnerItem {
 
-    private Project project;
+    private final Project project;
 
     public SpinnerItem(Project project) {
         this.project = project;

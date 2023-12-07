@@ -7,16 +7,16 @@ import java.util.Objects;
 
 public class TaskViewStateItem {
 
-    private int taskId;
+    private final int taskId;
 
     @ColorRes
-    private int projectColor;
+    private final int projectColor;
 
     @NonNull
-    private String taskName;
+    private final String taskName;
 
     @NonNull
-    private String projectName;
+    private final String projectName;
 
     public TaskViewStateItem(int taskId, int projectColor, @NonNull String taskName, @NonNull String projectName) {
         this.taskId = taskId;

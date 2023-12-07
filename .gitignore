@@ -76,7 +76,7 @@ fastlane/readme.md
 # CMake
 cmake-build-*/
 
-# File-based project format
+# File-based projectTest format
 *.iws
 
 # mpeltonen/sbt-idea plugin

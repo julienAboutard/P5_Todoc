@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProjectWithTasks {
-    @Embedded public Project project;
+    @Embedded public final Project project;
     @Relation(
         parentColumn = "project_id",
         entityColumn = "projectId"
     )
-    public List<Task> task;
+    public final List<Task> task;
 
     public ProjectWithTasks(Project project, List<Task> task) {
         this.project = project;

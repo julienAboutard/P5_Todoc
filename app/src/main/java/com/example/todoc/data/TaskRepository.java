@@ -18,10 +18,10 @@ import javax.inject.Singleton;
 public class TaskRepository {
 
     @NonNull
-    private TaskDao taskDao;
+    private final TaskDao taskDao;
 
     @NonNull
-    private ProjectDao projectDao;
+    private final ProjectDao projectDao;
 
     @Inject
     public TaskRepository(

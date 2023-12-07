@@ -35,7 +35,7 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
 
     private View initView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_project_layout_ressource, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_project_layout_resource, parent, false);
         }
 
         TextView textView = convertView.findViewById(R.id.spinner_project_name);

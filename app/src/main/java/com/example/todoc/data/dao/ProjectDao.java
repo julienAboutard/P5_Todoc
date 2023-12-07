@@ -10,6 +10,7 @@ import com.example.todoc.data.entity.Project;
 
 import java.util.List;
 
+/** @noinspection UnusedReturnValue*/
 @Dao
 public interface ProjectDao {
 

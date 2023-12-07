@@ -2,18 +2,15 @@ package com.example.todoc.ui.tasks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.todoc.R;
-import com.example.todoc.data.sorting.SortingParametersRepository;
 import com.example.todoc.databinding.ActivityMainBinding;
 import com.example.todoc.ui.addtasks.AddTaskDialogFragment;
 import com.example.todoc.ui.tasks.sort.SortDialogFragment;
@@ -34,21 +31,13 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(viewBinding.getRoot());
         viewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
-        TaskAdapter adapter = new TaskAdapter(new TaskListener() {
-            @Override
-            public void onDeleteTaskButtonClicked(int taskId) {
-                viewModel.onDeleteTaskButtonClicked(taskId);
-            }
-        });
+        TaskAdapter adapter = new TaskAdapter(taskId -> viewModel.onDeleteTaskButtonClicked(taskId));
 
         viewBinding.listTasks.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.listTasks.setAdapter(adapter);
-        viewBinding.fabAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddTaskDialogFragment dialogFragment = AddTaskDialogFragment.newInstance();
-                dialogFragment.show(getSupportFragmentManager().beginTransaction(), "Add Task");
-            }
+        viewBinding.fabAddTask.setOnClickListener(v -> {
+            AddTaskDialogFragment dialogFragment = AddTaskDialogFragment.newInstance();
+            dialogFragment.show(getSupportFragmentManager().beginTransaction(), "Add Task");
         });
 
         viewModel.getViewStateLiveData().observe(this, taskViewStateItems -> {
