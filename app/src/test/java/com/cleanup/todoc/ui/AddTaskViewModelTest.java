@@ -45,14 +45,14 @@ public class AddTaskViewModelTest {
     public void testGetAllProject() {
         //Given
         LiveData<List<Project>> projectLiveData = Mockito.mock();
-        Mockito.doReturn(projectLiveData).when(taskRepository).getAllProject();
+        Mockito.doReturn(projectLiveData).when(taskRepository).getAllProjects();
 
         //When
-        LiveData<List<Project>> result = taskRepository.getAllProject();
+        LiveData<List<Project>> result = taskRepository.getAllProjects();
 
         //Then
         assertEquals(projectLiveData, result);
-        verify(taskRepository).getAllProject();
+        verify(taskRepository).getAllProjects();
         Mockito.verifyNoMoreInteractions(taskRepository, ioExecutor);
     }
 

@@ -21,7 +21,7 @@ import javax.inject.Provider;
 
 @Database(
     entities = {Task.class, Project.class},
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 public abstract class TodocDatabase extends RoomDatabase {

@@ -44,7 +44,7 @@ public class AddTaskViewModel extends ViewModel {
     }
 
     public LiveData<List<Project>> getAllProjects() {
-        return taskRepository.getAllProject();
+        return taskRepository.getAllProjects();
     }
 
     public void onProjectSelected(@NonNull Project project) {

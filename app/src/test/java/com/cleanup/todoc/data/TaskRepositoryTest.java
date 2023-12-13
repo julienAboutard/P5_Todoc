@@ -41,7 +41,7 @@ public class TaskRepositoryTest {
         Mockito.doReturn(projectsLiveData).when(projectDao).getAllProjects();
 
         //When
-        LiveData<List<Project>> result = taskRepository.getAllProject();
+        LiveData<List<Project>> result = taskRepository.getAllProjects();
 
         //Then
         assertEquals(projectsLiveData, result);

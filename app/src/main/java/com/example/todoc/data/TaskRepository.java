@@ -31,7 +31,7 @@ public class TaskRepository {
         this.taskDao = taskDao;
         this.projectDao = projectDao;
     }
-    public LiveData<List<Project>> getAllProject() {
+    public LiveData<List<Project>> getAllProjects() {
         return projectDao.getAllProjects();
     }
 

@@ -30,7 +30,9 @@ public class AddTaskDialogFragment extends DialogFragment {
     @NonNull
     public static AddTaskDialogFragment newInstance() {
         return new AddTaskDialogFragment();
-    }    @Override
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Objects.requireNonNull(Objects.requireNonNull(getDialog()).getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
